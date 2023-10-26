@@ -42,13 +42,13 @@ public class TestCase02 {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         WebElement SonyXperiaPrice = driver.findElement(By.cssSelector("span[id='product-price-1'] span[class='price']"));
         //WebElement SonyXperiaPrice = driver.findElement(By.id("product-price-1"));
-        System.out.println(SonyXperiaPrice.getText());
+        System.out.println("listPrice:" + SonyXperiaPrice.getText());
         Thread.sleep(2000);
         WebElement SonyXperiaImg = driver.findElement(By.id("product-collection-image-1"));
         SonyXperiaImg.click();
         Thread.sleep(2000);
         WebElement price = driver.findElement(By.cssSelector(".price"));
-        System.out.println(price.getText());
+        System.out.println("detailPrice:" + price.getText());
         TakesScreenshot screenshot = ((TakesScreenshot) driver);
         File srcFile = screenshot.getScreenshotAs(OutputType.FILE);
         String autoAllocate = "screenshot3.png";
