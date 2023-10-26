@@ -32,7 +32,7 @@ Test Steps:
 public class TestCase02 {
     private static final String url = "http://live.techpanda.org/";
     private static final String destFile = "C:\\Users\\User\\OneDrive\\Máy tính\\SWT301\\SeleniumWebDriver\\screenshot\\";
-    public static void testCase01() throws InterruptedException, IOException {
+    public static void testCase02() throws InterruptedException, IOException {
         int src = 0;
         StringBuilder verificationError = new StringBuilder();
         WebDriver driver = driverFactory.getChromeDriver();
