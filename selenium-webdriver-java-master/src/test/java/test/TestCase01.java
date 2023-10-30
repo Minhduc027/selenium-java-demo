@@ -51,7 +51,7 @@ public class TestCase01 {
         Thread.sleep(2000);
         TakesScreenshot screenshot = ((TakesScreenshot) driver);
         File srcFile = screenshot.getScreenshotAs(OutputType.FILE);
-        String autoAllocate = "screenshot2.png";
+        String autoAllocate = "TC01.png";
         FileHandler.copy(srcFile, new File(destFile + autoAllocate));
     }
 }
