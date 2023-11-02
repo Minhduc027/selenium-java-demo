@@ -10,7 +10,7 @@ import java.time.Duration;
 public class CheckoutPage {
 
     private WebDriver driver;
-    private By moneyOrder = By.xpath("//label[@for='p_method_checkmo']");;
+    private By placeOrder = By.cssSelector("button[title='Place Order'] span span");
     private By validationAddress = By.xpath("//button[@class='button validation-passed']");
     private By shippingInfo = By.xpath("//button[@onclick='shipping.save()']//span//span[contains(text(),'Continue')]");
     private By shippingMethodContinue = By.xpath("//button[@onclick='shippingMethod.save()']//span//span[contains(text(),'Continue')]");
@@ -76,10 +76,9 @@ public class CheckoutPage {
     public void validationAddressButton() {
         click(validationAddress);
     }
-    public void checkMoneyOrderButton() {
-        click(moneyOrder);
+    public void placeOrderButton() {
+        click(placeOrder);
     }
-
     public CheckoutPage(WebDriver driver) {
         this.driver = driver;
     }

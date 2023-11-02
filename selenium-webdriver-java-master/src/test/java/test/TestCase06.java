@@ -129,14 +129,20 @@ public class TestCase06 {
 
             //13. In Shipping Method, Click Continue
             checkoutPage.shippingMethodContinueButton();
+            Thread.sleep(3000);
             //14. In Payment Information select 'Check/Money Order' radio button. Click Continue
-            checkoutPage.checkMoneyOrderButton();
-            WebElement btn = (WebElement) driver.findElements(By.xpath("//button[@onclick='payment.save()']"));
+            WebElement moneyOrder = driver.findElement(By.cssSelector("label[for='p_method_checkmo']"));
+            moneyOrder.click();
+            Thread.sleep(3000);
+            WebElement btn = driver.findElement(By.cssSelector("button[onclick='payment.save()'] span span"));
             btn.click();
             //15. Click 'PLACE ORDER' button
-
+            Thread.sleep(3000);
+            checkoutPage.placeOrderButton();
+            Thread.sleep(3000);
             //16. Verify Oder is generated. Note the order number
-
+            WebElement orderID = driver.findElement(By.xpath("//div[@class='main-container col1-layout']//p[1]"));
+            System.out.println("Số đơn hàng đã được tạo: " + orderID.getText());
             Thread.sleep(3000);
             //Screenshot
             TakesScreenshot screenshot = ((TakesScreenshot) driver);
