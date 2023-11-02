@@ -56,7 +56,7 @@ public class TestCase05 {
         String firstName = "Mai Nguyen";
         String middleName = "Duc";
         String lastName = "Minh";
-        String email = "minhmndse1177@fpt.edu.vn";
+        String email = "minhmndse2003@fpt.edu.vn";
         String password = "123456789";
         String confirm = password;
         String expected = "Your Wishlist has been shared.";
