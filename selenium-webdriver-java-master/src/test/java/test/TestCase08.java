@@ -12,6 +12,9 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.AssertJUnit.assertEquals;
+
 /* /-----------------------TESTCASE08-------------------------/
 
 *  Verify you are able to change or reorder previously added product
@@ -74,13 +77,14 @@ public class TestCase08 {
             myAccountPage.clickReOrderLink();
             Thread.sleep(1000);
             //Change QTY(10) and click update.
-            System.out.println("GRAND PRICE before:" + driver.findElement(By.cssSelector("strong span[class='price']")).getText());
-            myAccountPage.enterQTY("10");
+            String GrandPriceBefore = driver.findElement(By.cssSelector("strong span[class='price']")).getText();
+            myAccountPage.enterQTY("2");
             Thread.sleep(300);
             driver.findElement(By.xpath("//button[@title='Update']")).click();
 
             //5. Verify Grand Total is changed
-            System.out.println("GRAND PRICE after:" + driver.findElement(By.cssSelector("strong span[class='price']")).getText());
+            String GrandPriceAfter = driver.findElement(By.cssSelector("strong span[class='price']")).getText();
+            assertNotEquals(GrandPriceBefore, GrandPriceAfter);
             Thread.sleep(300);
             //process to check out
             checkoutPage.processToCheckoutButton();
@@ -100,31 +104,31 @@ public class TestCase08 {
             Select cbilling = new Select(driver.findElement(By.id("billing:country_id")));
             cbilling.selectByValue("US");
             checkoutPage.enterTelephone(telephone);
-            Thread.sleep(3000);
+            Thread.sleep(2000);
             //click continue
             checkoutPage.clickContinueButton();
-            Thread.sleep(3000);
+            Thread.sleep(2000);
 
             // In Shipping Method, Click Continue
             checkoutPage.shippingMethodContinueButton();
-            Thread.sleep(3000);
+            Thread.sleep(2000);
 
             //In Payment Information select 'Check/Money Order' radio button. Click Continue
             WebElement moneyOrder = driver.findElement(By.cssSelector("label[for='p_method_checkmo']"));
             moneyOrder.click();
-            Thread.sleep(3000);
+            Thread.sleep(2000);
             WebElement btn = driver.findElement(By.cssSelector("button[onclick='payment.save()'] span span"));
             btn.click();
 
             //Click 'PLACE ORDER' button
-            Thread.sleep(3000);
+            Thread.sleep(2000);
             checkoutPage.placeOrderButton();
-            Thread.sleep(3000);
+            Thread.sleep(2000);
 
             //7. Verify order is generated and note the order number
-            WebElement orderID = driver.findElement(By.xpath("//div[@class='main-container col1-layout']//p[1]"));
-            System.out.println("Your order Id: " + orderID.getText());
-            Thread.sleep(3000);
+            System.out.println("Your order Id: " + checkoutPage.getOrderId());
+
+            Thread.sleep(2000);
             //Screenshot
             TakesScreenshot screenshot = ((TakesScreenshot) driver);
             File srcFile = screenshot.getScreenshotAs(OutputType.FILE);

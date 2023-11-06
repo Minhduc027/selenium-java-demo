@@ -22,7 +22,12 @@ public class CheckoutPage {
     private By postcode = By.id("billing:postcode");
     private By telephone = By.id("billing:telephone");
     private By fax = By.id("billing:fax");
+    private By orderId = By.xpath("//div[@class='main-container col1-layout']//p[1]");
     private By continueButton = By.xpath("//button[@onclick='billing.save()']");
+    public String getOrderId (){
+        WebElement element = driver.findElement(orderId);
+        return element.getText();
+    }
     public void enterValue(By locator, String value) {
         WebElement element = driver.findElement(locator);
         element.clear();
