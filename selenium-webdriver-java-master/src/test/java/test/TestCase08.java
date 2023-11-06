@@ -2,7 +2,7 @@ package test;
 
 import POM.CheckoutPage;
 import POM.LoginPage;
-import POM.RegisterPage;
+import POM.MyAccountPage;
 import driver.driverFactory;
 import org.openqa.selenium.*;
 import org.openqa.selenium.io.FileHandler;
@@ -11,11 +11,12 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import static org.testng.AssertJUnit.assertEquals;
+/* /-----------------------TESTCASE08-------------------------/
 
-/* Verify user is able to purchase product using registered email id (USE CHROME BROWSER)
+*  Verify you are able to change or reorder previously added product
+
+ *  Test Data = QTY = 10
 
 Test Steps:
 
@@ -25,48 +26,33 @@ Test Steps:
 
 3. Login in application using previously created credential
 
-4. Click on MY WISHLIST link
+4. Click on 'REORDER' link , change QTY & click Update
 
-5. In next page, Click ADD TO CART link
+5. Verify Grand Total is changed
 
-6. Enter general shipping country, state/province and zip for the shipping cost estimate
+6. Complete Billing & Shipping Information
 
-7. Click Estimate
+7. Verify order is generated and note the order number
 
-8. Verify Shipping cost generated
+Expected outcomes:
 
-9. Select Shipping Cost, Update Total
+1) Grand Total is Changed
 
-10. Verify shipping cost is added to total
-
-11. Click "Proceed to Checkout"
-
-12a. Enter Billing Information, and click Continue
-
-12b. Enter Shipping Information, and click Continue
-
-13. In Shipping Method, Click Continue
-
-14. In Payment Information select 'Check/Money Order' radio button. Click Continue
-
-15. Click 'PLACE ORDER' button
-
-16. Verify Oder is generated. Note the order number
+2) Order number is generated
 */
 @Test
-public class TestCase06 {
+public class TestCase08 {
     private static final String url = "http://live.techpanda.org/";
     private static final String destFile = "C:\\Users\\User\\OneDrive\\Máy tính\\SWT301\\SeleniumWebDriver\\screenshot\\";
-    public static void testCase06() throws InterruptedException, IOException {
+    public static void testCase08() throws InterruptedException, IOException {
         String email = "minhmndse2003@fpt.edu.vn";
         String password = "123456789";
         String zip = "10001";
         String telephone = "0933112331";
-        String expected = "Your Wishlist has been shared.";
         WebDriver driver = driverFactory.getChromeDriver();
         try{
-            LoginPage loginPage = new LoginPage(driver);
             CheckoutPage checkoutPage = new CheckoutPage(driver);
+            LoginPage loginPage = new LoginPage(driver);
             //1. Go to http://live.techpanda.org/
             driver.get(url);
             //2. Click on my account link
@@ -76,45 +62,38 @@ public class TestCase06 {
             //3. Login in application using previously created credential
             loginPage.enterEmail(email);
             loginPage.enterPassword(password);
-            //4. Click on Login button
+            // Click on Login button
             loginPage.clickLogin();
+            Thread.sleep(500);
+
+            //4. Click on 'REORDER' link , change QTY & click Update
+            MyAccountPage myAccountPage = new MyAccountPage(driver);
+            myAccountPage.clickMyOrderLink();
+            Thread.sleep(2000);
+            //Click on 'Reorder'
+            myAccountPage.clickReOrderLink();
+            Thread.sleep(1000);
+            //Change QTY(10) and click update.
+            System.out.println("GRAND PRICE before:" + driver.findElement(By.cssSelector("strong span[class='price']")).getText());
+            myAccountPage.enterQTY("10");
             Thread.sleep(300);
+            driver.findElement(By.xpath("//button[@title='Update']")).click();
 
-            //4. Click on MY WISHLIST link
-            loginPage.clickMyWishList();
+            //5. Verify Grand Total is changed
+            System.out.println("GRAND PRICE after:" + driver.findElement(By.cssSelector("strong span[class='price']")).getText());
             Thread.sleep(300);
-
-            //5. In next page, Click ADD TO CART link
-            loginPage.clickAddToCart();
-            Thread.sleep(300);
-
-            //6. Enter general shipping country, state/province and zip for the shipping cost estimate
-            Select select = new Select(driver.findElement(By.id("country")));
-            select.selectByValue("US");
-            loginPage.enterZipCode(zip);
-            Select select2 = new Select(driver.findElement(By.id("region_id")));
-            select2.selectByValue("12");
-
-            //7. Click Estimate
-            loginPage.clickEstimate();
-
-            //8. Verify Shipping cost generated
-            loginPage.clickCheckGenerate();
-
-            //9. Select Shipping Cost, Update Total
-            loginPage.clickUpdateTotal();
-
-            //10. Verify shipping cost is added to total
-            System.out.println(driver.findElement(By.xpath("//td[normalize-space()='Shipping & Handling (Flat Rate - Fixed)']")).getText());
-            //11. Click "Proceed to Checkout"
+            //process to check out
             checkoutPage.processToCheckoutButton();
-            //12a. Enter Billing Information, and click Continue
+
+            //6. Complete Billing & Shipping Information
             Select billingAddress = new Select(driver.findElement(By.id("billing-address-select")));
             billingAddress.selectByIndex(1);
+
             Thread.sleep(1000);
             checkoutPage.enterCompany("FPT");Thread.sleep(1000);
             checkoutPage.enterAddress("12/50");Thread.sleep(1000);
             checkoutPage.enterCity("ABCDE");Thread.sleep(1000);
+
             Select billing = new Select(driver.findElement(By.id("billing:region_id")));
             billing.selectByValue("12");
             checkoutPage.enterPostcode(zip);
@@ -122,35 +101,34 @@ public class TestCase06 {
             cbilling.selectByValue("US");
             checkoutPage.enterTelephone(telephone);
             Thread.sleep(3000);
+            //click continue
             checkoutPage.clickContinueButton();
             Thread.sleep(3000);
-            //checkoutPage.validationAddressButton();
-            //12b. Enter Shipping Information, and click Continue
 
-            //13. In Shipping Method, Click Continue
+            // In Shipping Method, Click Continue
             checkoutPage.shippingMethodContinueButton();
             Thread.sleep(3000);
 
-            //14. In Payment Information select 'Check/Money Order' radio button. Click Continue
+            //In Payment Information select 'Check/Money Order' radio button. Click Continue
             WebElement moneyOrder = driver.findElement(By.cssSelector("label[for='p_method_checkmo']"));
             moneyOrder.click();
             Thread.sleep(3000);
             WebElement btn = driver.findElement(By.cssSelector("button[onclick='payment.save()'] span span"));
             btn.click();
 
-            //15. Click 'PLACE ORDER' button
+            //Click 'PLACE ORDER' button
             Thread.sleep(3000);
             checkoutPage.placeOrderButton();
             Thread.sleep(3000);
 
-            //16. Verify Oder is generated. Note the order number
+            //7. Verify order is generated and note the order number
             WebElement orderID = driver.findElement(By.xpath("//div[@class='main-container col1-layout']//p[1]"));
-            System.out.println("Số đơn hàng đã được tạo: " + orderID.getText());
+            System.out.println("Your order Id: " + orderID.getText());
             Thread.sleep(3000);
             //Screenshot
             TakesScreenshot screenshot = ((TakesScreenshot) driver);
             File srcFile = screenshot.getScreenshotAs(OutputType.FILE);
-            String autoAllocate = "TC06.png";
+            String autoAllocate = "TC08.png";
             FileHandler.copy(srcFile, new File(destFile + autoAllocate));
         }catch (Exception e){
             e.getMessage();
