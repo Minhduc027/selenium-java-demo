@@ -141,7 +141,7 @@ public class TestCase06 {
             //15. Click 'PLACE ORDER' button
             Thread.sleep(2000);
             checkoutPage.placeOrderButton();
-            Thread.sleep(2000);
+            Thread.sleep(4000);
 
             //16. Verify Oder is generated. Note the order number
             System.out.println("Your order Id: " + checkoutPage.getOrderId());
